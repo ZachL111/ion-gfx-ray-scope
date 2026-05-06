@@ -1,68 +1,40 @@
 # ion-gfx-ray-scope
 
-`ion-gfx-ray-scope` packages a practical graphics exercise in Dart. The emphasis is on deterministic behavior, a small public API, and examples that explain the tradeoffs.
+`ion-gfx-ray-scope` keeps a focused Dart implementation around graphics. The project goal is to design a Dart verification harness for ray systems, covering event replay, fixture event logs, and failure-oriented tests.
 
-## How I Read Ion Gfx Ray Scope
+## Use Case
 
-The useful thing to inspect here is how the same score rule is represented in code, metadata, and examples. If those three pieces disagree, the audit script should make the drift visible.
+The point is to make a small domain rule concrete enough that a reader can change it and immediately see what broke.
 
-## Main Behaviors
+## Ion Gfx Ray Scope Review Notes
 
-- Includes extended examples for render inputs, including `surge` and `degraded`.
-- Documents stable output tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-- Stores project constants and verification metadata in `metadata/project.json`.
-- Adds a repository audit script that checks structure before running the language verifier.
+The first comparison I would make is `shader drift` against `atlas pressure` because it shows where the rule is most opinionated.
 
-## Problem Shape
+## Highlights
 
-The repository exists to keep a technical idea small enough to reason about. The implementation avoids external dependencies where possible, then uses fixtures to make changes easy to review.
+- `fixtures/domain_review.csv` adds cases for geometry span and atlas pressure.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/ion-gfx-ray-walkthrough.md` walks through the case spread.
+- The Dart code includes a review path for `shader drift` and `atlas pressure`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Repository Map
+## Code Layout
 
-- `lib`: library code
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
+The core code exposes a scoring path and the added review layer uses `signal`, `slack`, `drag`, and `confidence`. The domain terms are `geometry span`, `atlas pressure`, `shader drift`, and `render budget`.
 
-## Internal Model
+The Dart code keeps the review rule close to the tests.
 
-The core is a scoring model over demand, capacity, latency, risk, and weight. That keeps geometry data, layout fixtures, and render inputs in one explicit decision path. The threshold is 167, with risk penalty 5, latency penalty 3, and weight bonus 2. The Dart project uses a small library and assertion script, avoiding package dependencies for verification.
-
-## How To Run It
+## Run The Check
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Regression Path
 
-## Scenario Walkthrough
+The verifier is intentionally local. It should fail if the fixture score math, lane assignment, or language-specific test drifts.
 
-`surge` is the first example I would inspect because it lands on the `accept` path with a score of 207. The broader file also keeps `degraded` at -49 and `surge` at 207, which gives the model a useful low-to-high spread.
+## Future Work
 
-## Validation
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
-
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Known Edges
-
-The scoring model is simple by design. More domain-specific behavior should be added through explicit adapters or extra fixture classes rather than hidden constants.
-
-## Follow-Up Work
-
-- Split the scoring constants into a typed configuration object and validate it before use.
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add a loader for `examples/extended_cases.csv` and promote selected cases into the language test suite.
-- Add one more graphics fixture that focuses on a malformed or borderline input.
-
-## Run It Locally
-
-The only required setup is the local Dart toolchain. After cloning, stay in the repo root so fixture paths resolve correctly.
+This remains a local project with deterministic fixtures. It does not depend on credentials, hosted services, or live data. Future work should add richer malformed inputs before widening the public API.

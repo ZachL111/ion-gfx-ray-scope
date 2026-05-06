@@ -59,3 +59,7 @@ foreach ($pathPattern in $knownPaths) {
 }
 
 dart tests/test_policy.dart
+
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-ion-gfx-ray-detail.ps1
+
+dart tests/test_domain_review.dart

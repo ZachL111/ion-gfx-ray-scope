@@ -1,0 +1,73 @@
+{
+  "repo": "ion-gfx-ray-scope",
+  "language": "Dart",
+  "category": "Graphics",
+  "goal": "Design a Dart verification harness for ray systems, covering event replay, fixture event logs, and failure-oriented tests.",
+  "review_model": {
+    "terms": [
+      "geometry span",
+      "atlas pressure",
+      "shader drift",
+      "render budget"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "geometry span",
+      "signal": 75,
+      "slack": 44,
+      "drag": 25,
+      "confidence": 69,
+      "score": 188,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "atlas pressure",
+      "signal": 73,
+      "slack": 32,
+      "drag": 32,
+      "confidence": 63,
+      "score": 145,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "shader drift",
+      "signal": 80,
+      "slack": 44,
+      "drag": 12,
+      "confidence": 74,
+      "score": 242,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "render budget",
+      "signal": 58,
+      "slack": 39,
+      "drag": 12,
+      "confidence": 77,
+      "score": 196,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "geometry span",
+      "signal": 73,
+      "slack": 40,
+      "drag": 28,
+      "confidence": 53,
+      "score": 155,
+      "lane": "ship"
+    }
+  ]
+}
